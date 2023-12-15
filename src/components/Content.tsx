@@ -1,14 +1,17 @@
 import React from 'react';
-import { Todo } from '../App';
 import styled from 'styled-components';
-
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../redux/config/configStore';
+import { RootState } from '../redux/config/configStore';
+import { removeTodo, switchTodo } from '../redux/modules/todoSlice';
 type Props = {
-    todos: Todo[];
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
     isDone: boolean;
 };
 
-function Content({ todos, setTodos, isDone }: Props) {
+function Content({ isDone }: Props) {
+    const todos = useSelector((state: RootState) => state.todos);
+    const dispatch = useAppDispatch();
+
     return (
         <>
             <StDiv> {isDone ? '✌️Done✌️' : '✍️Working'}</StDiv>
@@ -24,24 +27,14 @@ function Content({ todos, setTodos, isDone }: Props) {
                                 <StDivBtn>
                                     <DeleteButton
                                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                            const deleted = todos.filter((item) => {
-                                                return todo.id !== item.id;
-                                            });
-                                            setTodos(deleted);
+                                            dispatch(removeTodo(todo.id));
                                         }}
                                     >
                                         삭제
                                     </DeleteButton>
                                     <StateButton
                                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                            const stateChange = todos.map((item) => {
-                                                if (item.id === todo.id) {
-                                                    return { ...item, isDone: !item.isDone };
-                                                } else {
-                                                    return item;
-                                                }
-                                            });
-                                            setTodos(stateChange);
+                                            dispatch(switchTodo(todo.id));
                                         }}
                                     >
                                         {isDone ? '취소' : '완료'}

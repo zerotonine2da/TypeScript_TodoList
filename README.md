@@ -1,10 +1,15 @@
-# TypeScript TodoList (level 1 )
+# TypeScript TodoList (level 2 )
 
-React 이용 Todolist
+ReactToolKit 이용 Todolist
 
 ## 구분
 
-1. components폴더
+[components 폴더]
 
-1) Contents.tsx : 항목 목록 표시 + 삭제 + 상태값 변경(완료-취소)
-2) InputForm.tsx : Todo 항목 추가
+1.  Contents.tsx : 항목 목록 표시 + 삭제 + 상태값 변경(완료-취소)
+2.  InputForm.tsx : Todo 항목 추가
+
+[redux 폴더]
+
+1.  config > configStore.tsx : 전역 state 관리 저장소
+2.  modules > todoSlice.tsx : Todo 항목 추가, 삭제, 상태변경

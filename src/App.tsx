@@ -1,27 +1,9 @@
-import { useState } from 'react';
 import './App.css';
 import InputForm from './components/InputForm';
-import uuid from 'react-uuid';
 import Content from './components/Content';
 import styled from 'styled-components';
 
-export type Todo = {
-    id: string;
-    title: string;
-    content: string;
-    isDone: boolean;
-};
-
 function App() {
-    const initialState: Todo = {
-        id: uuid(),
-        title: '제목1',
-        content: '내용1',
-        isDone: false,
-    };
-
-    const [todos, setTodos] = useState<Todo[]>([initialState]);
-
     return (
         <StDiv>
             <StHeader>
@@ -29,9 +11,9 @@ function App() {
                 <p>React</p>
             </StHeader>
             <StMain>
-                <InputForm todos={todos} setTodos={setTodos} />
-                <Content todos={todos} setTodos={setTodos} isDone={false} />
-                <Content todos={todos} setTodos={setTodos} isDone={true} />
+                <InputForm />
+                <Content isDone={false} />
+                <Content isDone={true} />
             </StMain>
             <footer></footer>
         </StDiv>

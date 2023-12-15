@@ -1,14 +1,12 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { useState } from 'react';
 import uuid from 'react-uuid';
-import { Todo } from '../App';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../redux/modules/todoSlice';
 
-type Props = {
-    todos: Todo[];
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-};
+function InputForm() {
+    const dispatch = useDispatch();
 
-function InputForm({ todos, setTodos }: Props) {
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const inputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +30,7 @@ function InputForm({ todos, setTodos }: Props) {
             content,
             isDone: false,
         };
-
-        setTodos([...todos, newData]);
+        dispatch(addTodo(newData));
         setTitle('');
         setContent('');
     };
@@ -60,6 +57,7 @@ const StForm = styled.form`
         border: none;
         height: 28px;
         border-radius: 12px;
+        padding-left: 15px;
     }
     & label {
         width: 70px;
