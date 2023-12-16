@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../redux/modules/todoSlice';
+import api from '../axios/api';
 
 function InputForm() {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function InputForm() {
         setContent(e.target.value);
     };
 
-    const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (title === '' || content === '') {
             alert('제목/내용 모두 입력해야합니다.');
@@ -30,7 +31,9 @@ function InputForm() {
             content,
             isDone: false,
         };
-        dispatch(addTodo(newData));
+
+        const add = await api.post(`/todos/`, newData);
+        dispatch(addTodo(add.data));
         setTitle('');
         setContent('');
     };

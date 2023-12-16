@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import uuid from 'react-uuid';
 
-//interface 사용 --> 가독성과 유지보수에 좋음
 export interface Todo {
     id: string;
     title: string;
@@ -9,28 +7,14 @@ export interface Todo {
     isDone: boolean;
 }
 
-//초기 상태 정의
-const initialState: Todo[] = [
-    {
-        id: uuid(),
-        title: '제목1',
-        content: '내용1',
-        isDone: false,
-    },
-    {
-        id: uuid(),
-        title: '제목2',
-        content: '내용2',
-        isDone: true,
-    },
-];
+const initialState: Todo[] = [];
 
-//타입추론으로 타입지정을 안해도 되는 경우가 있음 : action.payload같은 경우
 const todoSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
         addTodo: (state, action) => {
+            console.log('action', action);
             state.push(action.payload);
         },
         removeTodo: (state, action) => {
@@ -45,8 +29,11 @@ const todoSlice = createSlice({
                 }
             });
         },
+        fetchTodo: (state, action) => {
+            return action.payload;
+        },
     },
 });
 
-export const { addTodo, removeTodo, switchTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, switchTodo, fetchTodo } = todoSlice.actions;
 export default todoSlice.reducer;

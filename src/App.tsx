@@ -2,6 +2,8 @@ import './App.css';
 import InputForm from './components/InputForm';
 import Content from './components/Content';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function App() {
     return (
