@@ -1,20 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
-import { RootState, useAppDispatch } from '../redux/config/configStore';
-import { __changeTodos, __deleteTodos, __getTodos } from '../redux/modules/todoSlice';
-import { useSelector } from 'react-redux';
+import { Todo } from '../types/Todo';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { changeTodos, deleteTodos, getTodos } from '../axios/QueryApi';
 
 type Props = {
     isDone: boolean;
 };
 
 function Content({ isDone }: Props) {
-    const dispatch = useAppDispatch();
-    const todos = useSelector((state: RootState) => state.todos.todos);
+    const { isLoading, isError, data } = useQuery('todos', getTodos);
 
+    const queryClient = useQueryClient();
+    const mutationDelete = useMutation(deleteTodos, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('todos');
+        },
+    });
+    const mutationChange = useMutation(changeTodos, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('todos');
+        },
+    });
+
+    if (isLoading) {
+        return <div>로딩중..</div>;
+    }
+
+    if (isError) {
+        return <div>오류가 발생했습니다</div>;
+    }
     const removeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
         try {
-            dispatch(__deleteTodos(id));
+            mutationDelete.mutate(id);
         } catch (error) {
             console.log('삭제 오류', error);
         }
@@ -22,7 +40,7 @@ function Content({ isDone }: Props) {
 
     const changeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string, isDone: boolean) => {
         try {
-            dispatch(__changeTodos({ id, isDone }));
+            mutationChange.mutate({ id, isDone });
         } catch (error) {
             console.log('상태 업데이트 오류', error);
         }
@@ -32,9 +50,9 @@ function Content({ isDone }: Props) {
         <>
             <StDiv> {isDone ? '✌️Done✌️' : '✍️Working'}</StDiv>
             <StDivLayout>
-                {todos
-                    .filter((item) => item.isDone === isDone)
-                    .map((todo) => {
+                {data
+                    .filter((item: Todo) => item.isDone === isDone)
+                    .map((todo: Todo) => {
                         return (
                             <StDivTodo key={todo.id}>
                                 <h3>{todo.title}</h3>

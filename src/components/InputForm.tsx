@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
-import { __addTodos } from '../redux/modules/todoSlice';
-import { useAppDispatch } from '../redux/config/configStore';
+import { useMutation, useQueryClient } from 'react-query';
+import { addTodos } from '../axios/QueryApi';
+
 function InputForm() {
-    const dispatch = useAppDispatch();
+    const queryClient = useQueryClient();
+    const mutation = useMutation(addTodos, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('todos');
+        },
+    });
 
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
+
     const inputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
     };
@@ -29,7 +36,7 @@ function InputForm() {
             content,
             isDone: false,
         };
-        dispatch(__addTodos(newData));
+        mutation.mutate(newData);
         setTitle('');
         setContent('');
     };
