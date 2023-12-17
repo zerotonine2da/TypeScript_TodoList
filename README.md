@@ -1,6 +1,6 @@
 # TypeScript TodoList (level 4 )
 
-Thunk + Axios 추 Todolist
+Thunk + Axios 추가 Todolist
 
 ## 구분
 
