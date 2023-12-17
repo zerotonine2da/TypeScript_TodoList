@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Todo } from '../types/Todo';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { changeTodos, deleteTodos, getTodos } from '../axios/queryApi';
+import swal from 'sweetalert';
 
 type Props = {
     isDone: boolean;
@@ -32,7 +33,20 @@ function Content({ isDone }: Props) {
     }
     const removeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
         try {
-            mutationDelete.mutate(id);
+            swal({
+                title: '삭제하시겠습니까?',
+                text: '삭제된 데이터는 복구할 수 없습니다.',
+                icon: 'warning',
+                buttons: ['취소', '확인'],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal('삭제되었습니다.', {
+                        icon: 'success',
+                    });
+                    mutationDelete.mutate(id);
+                }
+            });
         } catch (error) {
             console.log('삭제 오류', error);
         }

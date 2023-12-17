@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from 'react-query';
 import { addTodos } from '../axios/queryApi';
+import swal from 'sweetalert';
 
 function InputForm() {
     const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ function InputForm() {
     const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (title === '' || content === '') {
-            alert('제목/내용 모두 입력해야합니다.');
+            swal('제목과 내용 모두 입력해야합니다', '', 'info');
             return;
         }
 
@@ -39,6 +40,7 @@ function InputForm() {
         mutation.mutate(newData);
         setTitle('');
         setContent('');
+        swal('추가 완료!', '할 일이 추가되었습니다!', 'success');
     };
     return (
         <StForm onSubmit={formSubmit}>
