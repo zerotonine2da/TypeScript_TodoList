@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from 'react-query';
-import { addTodos } from '../axios/QueryApi';
+import { addTodos } from '../axios/queryApi';
 
 function InputForm() {
     const queryClient = useQueryClient();

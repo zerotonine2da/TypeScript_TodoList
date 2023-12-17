@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Todo } from '../types/Todo';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { changeTodos, deleteTodos, getTodos } from '../axios/QueryApi';
+import { changeTodos, deleteTodos, getTodos } from '../axios/queryApi';
 
 type Props = {
     isDone: boolean;

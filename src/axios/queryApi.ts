@@ -1,4 +1,4 @@
-import api from '../axios/api';
+import api from './api';
 import { Todo } from '../types/Todo';
 //조회
 const getTodos = async () => {
