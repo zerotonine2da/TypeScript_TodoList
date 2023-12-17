@@ -2,10 +2,18 @@ import './App.css';
 import InputForm from './components/InputForm';
 import Content from './components/Content';
 import styled from 'styled-components';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { __getTodos } from './redux/modules/todoSlice';
+import { useAppDispatch } from './redux/config/configStore';
 
 function App() {
+    const dispatch = useAppDispatch();
+
+    //데이터 가져오기
+    useEffect(() => {
+        dispatch(__getTodos());
+    }, [dispatch]);
+
     return (
         <StDiv>
             <StHeader>

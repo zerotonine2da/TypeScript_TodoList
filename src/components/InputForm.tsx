@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { addTodo } from '../redux/modules/todoSlice';
-import api from '../axios/api';
-
+import { __addTodos } from '../redux/modules/todoSlice';
+import { useAppDispatch } from '../redux/config/configStore';
 function InputForm() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
@@ -31,9 +29,7 @@ function InputForm() {
             content,
             isDone: false,
         };
-
-        const add = await api.post(`/todos/`, newData);
-        dispatch(addTodo(add.data));
+        dispatch(__addTodos(newData));
         setTitle('');
         setContent('');
     };

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { RootState, useAppDispatch } from '../redux/config/configStore';
-import { removeTodo, switchTodo, fetchTodo } from '../redux/modules/todoSlice';
+import { __changeTodos, __deleteTodos, __getTodos } from '../redux/modules/todoSlice';
 import { useSelector } from 'react-redux';
-import api from '../axios/api';
 
 type Props = {
     isDone: boolean;
@@ -11,38 +10,19 @@ type Props = {
 
 function Content({ isDone }: Props) {
     const dispatch = useAppDispatch();
-    const todos = useSelector((state: RootState) => state.todos);
-
-    //데이터 가져오기
-    const fetchData = async () => {
-        try {
-            const { data } = await api.get('/todos');
-            dispatch(fetchTodo(data));
-        } catch (error) {
-            console.log('조회 오류', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const todos = useSelector((state: RootState) => state.todos.todos);
 
     const removeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
         try {
-            dispatch(removeTodo(id));
-            await api.delete(`/todos/${id}`);
+            dispatch(__deleteTodos(id));
         } catch (error) {
             console.log('삭제 오류', error);
         }
     };
 
-    const changeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
+    const changeHandler = async (e: React.MouseEvent<HTMLButtonElement>, id: string, isDone: boolean) => {
         try {
-            const change = await api.patch(`/todos/${id}`, {
-                isDone: !isDone,
-            });
-            const changeId = change.data.id;
-            dispatch(switchTodo(changeId));
+            dispatch(__changeTodos({ id, isDone }));
         } catch (error) {
             console.log('상태 업데이트 오류', error);
         }
@@ -67,7 +47,9 @@ function Content({ isDone }: Props) {
                                         삭제
                                     </DeleteButton>
                                     <StateButton
-                                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => changeHandler(e, todo.id)}
+                                        onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                                            changeHandler(e, todo.id, todo.isDone)
+                                        }
                                     >
                                         {isDone ? '취소' : '완료'}
                                     </StateButton>
