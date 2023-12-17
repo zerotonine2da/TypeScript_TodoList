@@ -22,5 +22,3 @@ json-server 추가 Todolist
 
 [db.json 파일]
 1. 데이터 저장용
-
-2. 
